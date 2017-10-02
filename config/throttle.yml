@@ -1,11 +1,26 @@
-creat_post:
-  throttle_time_window: 60 
-  throttle_max_requests: 2 
+development:
+  create_post:
+    throttle_time_window: 60
+    throttle_max_requests: 2
 
-get_posts:
-  throttle_time_window: 15  
-  throttle_max_requests: 60  
+  get_posts:
+    throttle_time_window: 15
+    throttle_max_requests: 60
 
-default:
-  throttle_time_window: 15
-  throttle_max_requests: 15
+  default:
+    throttle_time_window: 15
+    throttle_max_requests: 15
+
+
+production:
+  create_post:
+    throttle_time_window: 60
+    throttle_max_requests: 2
+
+  get_posts:
+    throttle_time_window: 15
+    throttle_max_requests: 60
+
+  default:
+    throttle_time_window: 15
+    throttle_max_requests: 15
