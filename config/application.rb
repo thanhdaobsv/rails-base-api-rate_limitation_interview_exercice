@@ -27,7 +27,7 @@ module RailsBaseApi
     config.noreply = "noreply@fs-rails-base-api.heroku.com"
 
     # Admin email
-    config.admin_email = admin@baseapi.com
+    config.admin_email = "admin@baseapi.com"
 
     # Default host for action mailer, initializers/mailer.rb
     config.host = "localhost:5000"

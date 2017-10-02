@@ -163,41 +163,47 @@ Dear Loic,
 
 ```
 	def throttle(endpoint_name: :default)
-		throttle_info = Rails.application.config_for(:throttle)
-		throttle_time_window = throttle_info[:throttle_time_window]
-	  throttle_max_requests = throttle_info[:throttle_max_requests]  
-	  key = "user:#{current_user.id}_request_#{endpoint_name}"
-		begin
-	  	count = REDIS.get(key)
-	    unless count
+
+    throttle_info = Rails.application.config_for(:throttle)
+  	throttle_time_window = throttle_info["#{endpoint_name}"]["throttle_time_window"]
+    throttle_max_requests = throttle_info["#{endpoint_name}"]["throttle_max_requests"]
+
+    if current_user.present?
+      key = "user:#{current_user.id}_request_#{endpoint_name}"
+    else
+      key = "user:#{request.remote_ip}_request_#{endpoint_name}"
+    end
+    begin
+      count = REDIS.get(key)
+	    if count.nil?
 	      REDIS.set(key, 0)
 	      REDIS.expire(key, throttle_time_window)
 	      return true
 	    end
-	    if count.to_i >= throttle_max_requests
+      if count.to_i >= throttle_max_requests
 	      render :status => 429, :json => {:message => "You have fired too many requests. Please wait for some time."}
 	      return
 	    end
-	    REDIS.incr(key)
+      REDIS.incr(key)
 	    true
 	  rescue => error
 	  	puts error.inspect
-	    ### send email or SMS notification to developer group
-	    UserNotifier.send_redis_down_email(Rails.application.admin_email)
+        ### send email or SMS notification to developer group
+        UserNotifier.send_redis_down_email(Rails.application.config.admin_email)
 	  end
-	end
+  end
 ```
 
 5 - Throttle config for every endpoint implemented in file config/throttel.yml
 
 ```
 	creat_post:
-	  throttle_time_window: 60 
-	  throttle_max_requests: 2 
+	  throttle_time_window: 60
+	  throttle_max_requests: 2
 
 	get_posts:
-	  throttle_time_window: 15  
-	  throttle_max_requests: 60  
+	  throttle_time_window: 15
+	  throttle_max_requests: 60
 
 	default:
 	  throttle_time_window: 15
@@ -232,24 +238,19 @@ Dear Loic,
 
 	On Mac:
 	brew install redis
-	$ cd ~/Downloads/redis-2.4.14
-	$ make test
-	$ make
-	$ sudo mv src/redis-server /usr/bin
-	$ sudo mv src/redis-cli /usr/bin
-	$ mkdir ~/.redis
-	$ touch ~/.redis/redis.conf
 
 	Run Redis server:
-	$ redis-server
+	$ redis-server --daemonize yes
+
+	Test Redis:
+	redis-cli
+
 ```
 
 2 - Must implement error handling when the redis server is down by catch exeption and send email notification to admin group. In the time redis server downed, throttle feature is stopped.
 
 ```
 	def send_redis_down_email(email)
-    @user = user
-    mail( :to => @user.email, :subject => )
     mail(:to => email, :subject => "[#{Rails.env}]Redis server down") do |format|
 		  format.text do
 		    render :text => "Redis server down, please check it !"
