@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
 ruby "2.3.3"
 
@@ -6,10 +6,10 @@ ruby "2.3.3"
 gem "rails", "4.2.8"
 gem "pg"
 gem "rails-api"
-gem "rails_api_format", git: "http://github.com/fs/rails-api-format.git"
+gem "rails_api_format", git: "https://github.com/fs/rails-api-format.git"
 
 # all other gems
-gem "active_model_serializers"
+gem "active_model_serializers", git: "https://github.com/rails-api/active_model_serializers.git"
 gem "decent_exposure"
 gem "devise"
 gem "dotenv-rails"
@@ -40,7 +40,7 @@ group :development, :test do
 
   gem "rails_best_practices"
   gem "brakeman"
-  # gem "rubocop"
+  gem "rubocop"
   gem "bundler-audit"
 end
 
