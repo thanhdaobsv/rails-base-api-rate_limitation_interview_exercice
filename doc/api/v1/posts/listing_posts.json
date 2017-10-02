@@ -1,0 +1,43 @@
+{
+  "resource": "Posts",
+  "http_method": "GET",
+  "route": "/v1/posts",
+  "description": "Listing posts",
+  "explanation": null,
+  "parameters": [
+    {
+      "name": "page",
+      "description": "Page"
+    },
+    {
+      "name": "per_page",
+      "description": "Items per page"
+    }
+  ],
+  "response_fields": [
+
+  ],
+  "requests": [
+    {
+      "request_method": "GET",
+      "request_path": "/v1/posts?page=1&per_page=25",
+      "request_body": null,
+      "request_headers": {
+        "Accept": "application/json"
+      },
+      "request_query_parameters": {
+        "page": "1",
+        "per_page": "25"
+      },
+      "request_content_type": null,
+      "response_status": 200,
+      "response_status_text": "OK",
+      "response_body": "{\"posts\":[{\"id\":1,\"title\":\"Atque soluta labore corrupti nostrum.\",\"text\":\"In non iusto asperiores veniam tempore et eos. Cupiditate repellendus veritatis voluptas fugiat tempore. Aperiam suscipit natus consectetur itaque aut.\",\"comments\":[]},{\"id\":2,\"title\":\"Similique consectetur et placeat nostrum in.\",\"text\":\"Saepe delectus asperiores iste suscipit. Quo exercitationem esse ad. Deleniti voluptatem consectetur praesentium autem dignissimos nemo.\",\"comments\":[]}],\"meta\":{\"pagination\":{\"total\":2,\"per_page\":25,\"page\":1}}}",
+      "response_headers": {
+        "Content-Type": "application/json; charset=utf-8"
+      },
+      "response_content_type": "application/json; charset=utf-8",
+      "curl": "curl \"http://localhost:5000/v1/posts?page=1&per_page=25\" -X GET \\\n\t-H \"Accept: application/json\" \\\n\t-H \"X-User-Email: user1@example.com\" \\\n\t-H \"X-User-Token: EGbK6gC19kzQG_Jypr1s\""
+    }
+  ]
+}
